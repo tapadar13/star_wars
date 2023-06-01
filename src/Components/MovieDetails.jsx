@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { images } from "../utils/images";
+import { useParams } from "react-router-dom";
+import config from "./constants/config";
 
 const MovieDetails = () => {
   const [movieInfo, setMovieInfo] = useState([]);
+  const { id } = useParams();
+  console.log(id);
+
+  useEffect(() => {
+    fetchMovieInfo();
+  }, []);
 
   const fetchMovieInfo = async () => {
-    const response = await fetch("http https://swapi.dev/api/people/");
+    const response = await fetch(config.baseUrl + `films/${Math.abs(id - 3)}`);
     const data = await response.json();
     console.log(data);
     setMovieInfo(data);
@@ -13,11 +20,11 @@ const MovieDetails = () => {
 
   return (
     <div>
-      <h3>{movieInfo.title}</h3>
-      <p>{movieInfo.release_date}</p>
-      <p>{movieInfo.director}</p>
-      <p>{movieInfo.producer}</p>
-      <p>{movieInfo.opening_crawl}</p>
+      <h3>Title: {movieInfo?.title}</h3>
+      <p>Released: {movieInfo?.release_date}</p>
+      <p>Director: {movieInfo?.director}</p>
+      <p>Producer: {movieInfo?.producer}</p>
+      <p>Plot: {movieInfo?.opening_crawl}</p>
     </div>
   );
 };
